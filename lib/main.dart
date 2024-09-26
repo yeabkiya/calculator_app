@@ -1,56 +1,52 @@
 import 'package:flutter/material.dart';
 
 void main() {
-  runApp(const CalculatorApp());
+  runApp(CalculatorApp());
 }
 
 class CalculatorApp extends StatelessWidget {
-  const CalculatorApp({super.key});
-
-
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Calculator App',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
+        primarySwatch: Colors.blue,
       ),
-      home: const CalculatorApp(),
+      home: CalculatorScreen(),
     );
   }
 }
 
 class CalculatorScreen extends StatefulWidget {
-  const CalculatorScreen({super.key});
-
   @override
-  // ignore: library_private_types_in_public_api
   _CalculatorScreenState createState() => _CalculatorScreenState();
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  String _input = '';
-  String _result = '';
-  String? _operator;
-  double? _firstOperand;
+  String _input = '';    // Input string shown on display
+  String _result = '';   // Final result after calculation
+  String? _operator;     // Holds the selected operator
+  double? _firstOperand; // First operand for calculations
 
+  // This function is called when number buttons are pressed
   void _numberPressed(String number) {
     setState(() {
       _input += number;
     });
   }
 
+  // This function is called when operator buttons (+, -, *, /) are pressed
   void _operatorPressed(String operator) {
     setState(() {
       if (_input.isNotEmpty) {
         _firstOperand = double.parse(_input);
-        _input = '';
-        _operator = operator;
+        _input = '';  // Clear the input to enter the second operand
+        _operator = operator; // Store the selected operator
       }
     });
   }
 
+  // This function is called when the "=" button is pressed
   void _calculateResult() {
     setState(() {
       if (_input.isNotEmpty && _firstOperand != null && _operator != null) {
@@ -67,19 +63,20 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             break;
           case '/':
             _result = secondOperand != 0
-              ? (_firstOperand! / secondOperand).toString()
-              : 'Error';
+                ? (_firstOperand! / secondOperand).toString()
+                : 'Error';  // Handle division by zero
             break;
           default:
             _result = 'Error';
         }
-        _input = _result; 
-        _firstOperand = null;
+        _input = _result; // Update input with result
+        _firstOperand = null; // Reset operands and operator
         _operator = null;
       }
     });
   }
 
+  // This function is called when the "C" (clear) button is pressed
   void _clearInput() {
     setState(() {
       _input = '';
@@ -93,30 +90,29 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: const Text('Calculator'),
+        title: Text('Calculator'),
       ),
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
+          // Display Area for input and result
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             alignment: Alignment.centerRight,
             child: Text(
               _input.isEmpty ? '0' : _input,
-              style: const TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
+              style: TextStyle(fontSize: 48, fontWeight: FontWeight.bold),
             ),
           ),
-
           Container(
-            padding: const EdgeInsets.all(20),
+            padding: EdgeInsets.all(20),
             alignment: Alignment.centerRight,
             child: Text(
               _result,
-              style: const TextStyle(fontSize:32, color: Colors.grey),
+              style: TextStyle(fontSize: 32, color: Colors.grey),
             ),
           ),
-
+          // Number and operator buttons
           Expanded(
             child: Column(
               children: [
@@ -128,10 +124,11 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             ),
           ),
         ],
-      ), // This trailing comma makes auto-formatting nicer for build methods.
+      ),
     );
   }
 
+  // Helper function to build a row of buttons
   Widget _buildButtonRow(String first, String second, String third, String fourth) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -144,6 +141,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
+  // Helper function to build each button
   Widget _buildButton(String label) {
     return Expanded(
       child: Padding(
@@ -155,14 +153,14 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             } else if (label == '=') {
               _calculateResult();
             } else if ('+-*/'.contains(label)) {
-              _operatorPressed(label);
+              _operatorPressed(label);  // This now works
             } else {
               _numberPressed(label);
             }
           },
           child: Text(
             label,
-            style: const TextStyle(fontSize: 24),
+            style: TextStyle(fontSize: 24),
           ),
         ),
       ),

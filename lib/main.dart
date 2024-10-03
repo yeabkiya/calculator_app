@@ -23,30 +23,30 @@ class CalculatorScreen extends StatefulWidget {
 }
 
 class _CalculatorScreenState extends State<CalculatorScreen> {
-  String _input = '';    // Input string shown on display
-  String _result = '';   // Final result after calculation
-  String? _operator;     // Holds the selected operator
-  double? _firstOperand; // First operand for calculations
+  String _input = '';    
+  String _result = '';   
+  String? _operator;     
+  double? _firstOperand; 
 
-  // This function is called when number buttons are pressed
+
   void _numberPressed(String number) {
     setState(() {
       _input += number;
     });
   }
 
-  // This function is called when operator buttons (+, -, *, /) are pressed
+
   void _operatorPressed(String operator) {
     setState(() {
       if (_input.isNotEmpty) {
         _firstOperand = double.parse(_input);
-        _input = '';  // Clear the input to enter the second operand
-        _operator = operator; // Store the selected operator
+        _input = '';  
+        _operator = operator; 
       }
     });
   }
 
-  // This function is called when the "=" button is pressed
+
   void _calculateResult() {
     setState(() {
       if (_input.isNotEmpty && _firstOperand != null && _operator != null) {
@@ -64,19 +64,19 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
           case '/':
             _result = secondOperand != 0
                 ? (_firstOperand! / secondOperand).toString()
-                : 'Error';  // Handle division by zero
+                : 'Error';  
             break;
           default:
             _result = 'Error';
         }
-        _input = _result; // Update input with result
-        _firstOperand = null; // Reset operands and operator
+        _input = _result; 
+        _firstOperand = null; 
         _operator = null;
       }
     });
   }
 
-  // This function is called when the "C" (clear) button is pressed
+
   void _clearInput() {
     setState(() {
       _input = '';
@@ -95,7 +95,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
       body: Column(
         mainAxisAlignment: MainAxisAlignment.end,
         children: <Widget>[
-          // Display Area for input and result
+          
           Container(
             padding: EdgeInsets.all(20),
             alignment: Alignment.centerRight,
@@ -112,7 +112,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               style: TextStyle(fontSize: 32, color: Colors.grey),
             ),
           ),
-          // Number and operator buttons
+          
           Expanded(
             child: Column(
               children: [
@@ -128,7 +128,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  // Helper function to build a row of buttons
+  
   Widget _buildButtonRow(String first, String second, String third, String fourth) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -141,7 +141,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
     );
   }
 
-  // Helper function to build each button
+  
   Widget _buildButton(String label) {
     return Expanded(
       child: Padding(
@@ -153,7 +153,7 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
             } else if (label == '=') {
               _calculateResult();
             } else if ('+-*/'.contains(label)) {
-              _operatorPressed(label);  // This now works
+              _operatorPressed(label);  
             } else {
               _numberPressed(label);
             }
